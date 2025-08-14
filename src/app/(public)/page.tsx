@@ -8,11 +8,9 @@ import TeamSection from "@/modules/homev2/components/teams-section";
 export default function Home() {
   return (
     <main className="w-full">
-      {/* <Hero /> */}
       <HeroV2 />
       <AboutSection />
       <TeamSection />
-      {/* <TeamSection /> */}
       <ServicesSection />
       <FloatingButtons />
       <Footer />

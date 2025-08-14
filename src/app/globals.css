@@ -57,6 +57,7 @@ html {
 }
 
 @theme {
+  --background: #1f4a45;
   --background-secondary: #1e1e1e;
 
   --color-gold-100: oklch(0.94 0.13 95);
@@ -89,6 +90,7 @@ html {
 :root {
   --radius: 0.625rem;
 
+  --background: #ffffff; /* fundo principal */
   --background-secondary: var(--olive-400); /* fundo secundário */
   --foreground: oklch(0.99 0.02 100);
 
@@ -158,6 +160,7 @@ html {
 }
 
 .dark {
+  --background: oklch(0.15 0.01 110);
   --background-secondary: #1e1e1e;
   --foreground: oklch(0.99 0 0);
 

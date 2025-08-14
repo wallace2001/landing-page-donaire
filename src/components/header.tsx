@@ -72,7 +72,7 @@ export default function Header() {
               <SheetTrigger>
                 <Menu className="text-white w-6 h-6" />
               </SheetTrigger>
-              <SheetContent side="right" className="bg-background text-white p-6 space-y-6">
+              <SheetContent side="right" className="bg-background text-black p-6 space-y-6">
                 <SheetTitle />
                 <SheetClose asChild>
                   <Link href="#about" className="block hover:text-gold-400 transition">SOBRE</Link>
