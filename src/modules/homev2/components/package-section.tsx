@@ -94,7 +94,7 @@ const brl = (v?: number) => {
 
 const gridV: Variants = {
   hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.3 } },
+  show: { opacity: 1, transition: { staggerChildren: 0.03 } },
 }
 
 const cardV: Variants = {
@@ -156,7 +156,7 @@ export function PackagesSection() {
           variants={gridV}
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.03 }}
           className="space-y-6"
         >
           {PACKAGES.map((p) => (

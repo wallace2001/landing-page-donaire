@@ -3,7 +3,7 @@
 
 import { motion, Variants } from 'framer-motion'
 import { ExternalLink, Instagram, Play, Youtube } from 'lucide-react'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 type Source = 'instagram' | 'youtube' | 'site' | 'vimeo'
 
@@ -92,6 +92,49 @@ function VideoCard({ item }: { item: VideoItem }) {
       setStarted(true)
     } catch {}
   }
+
+    // garante autoplay do preview no mobile
+  useEffect(() => {
+    const v = videoRef.current
+    if (!v) return
+
+    // atributos/propriedades que ajudam no iOS/Android
+    v.muted = true
+    v.defaultMuted = true
+    v.playsInline = true
+    // alguns navegadores exigem o atributo HTML literal:
+    v.setAttribute('playsinline', '')
+    v.setAttribute('webkit-playsinline', '') // legacy iOS
+
+    const tryPlay = () => v.play().catch(() => {/* ignore */})
+
+    const onLoaded = () => tryPlay()
+    v.addEventListener('loadeddata', onLoaded, { once: true })
+
+    // toca quando entra no viewport; pausa quando sai
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          tryPlay()
+        } else {
+          v.pause()
+        }
+      },
+      { threshold: 0.25 }
+    )
+    io.observe(v)
+
+    // se a aba voltar a ficar visível, tenta tocar de novo
+    const onVis = () => { if (!document.hidden) tryPlay() }
+    document.addEventListener('visibilitychange', onVis)
+
+    return () => {
+      v.removeEventListener('loadeddata', onLoaded)
+      io.disconnect()
+      document.removeEventListener('visibilitychange', onVis)
+    }
+  }, [])
+
 
   const { label, Icon } = getPlatformMeta(item.source)
 
