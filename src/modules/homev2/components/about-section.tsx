@@ -51,7 +51,7 @@ export default function SobreNosDonaire() {
         variants={container}
       >
         <motion.h2
-          className="text-xl md:text-3xl font-light leading-relaxed"
+          className="text-xl md:text-3xl leading-relaxed"
           variants={fadeUp(0.3)}
         >
           NÓS SOMOS <span className="font-bold text-[#1f6568]">APAIXONADOS</span> POR TORNAR REALIDADE

@@ -41,11 +41,11 @@ export default function Footer() {
         </div>
 
         {/* Coluna 3 - Redes Sociais */}
-        <div>
+        <div className='mb-14'>
           <h3 className="text-lg font-semibold mb-4">Conecte-se</h3>
           <div className="flex gap-4">
             <a
-              href="https://wa.me/SEU_NUMERO"
+              href="https://wa.me/+5561982020697"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-[#153b3d] hover:bg-[#0f2a2b] p-2 rounded-full transition"
@@ -53,7 +53,7 @@ export default function Footer() {
               <FaWhatsapp size={18} color="#fff" />
             </a>
             <a
-              href="https://instagram.com/SEU_INSTAGRAM"
+              href="https://www.instagram.com/donairecerimonial/"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-[#c13584] hover:bg-[#a42b70] p-2 rounded-full transition"
@@ -61,7 +61,7 @@ export default function Footer() {
               <FaInstagram size={18} color="#fff" />
             </a>
             <a
-              href="https://facebook.com/SEU_FACEBOOK"
+              href="https://www.facebook.com/donaire.cerimonial"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-[#1877f2] hover:bg-[#145dc9] p-2 rounded-full transition"
