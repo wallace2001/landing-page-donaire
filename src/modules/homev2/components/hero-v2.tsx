@@ -78,7 +78,7 @@ export default function HeroV2() {
           </motion.p>
 
           <motion.div variants={fadeUp(0.1)}>
-            <Button className="mt-8 rounded-full text-md px-10 py-8 bg-[#153b3d] text-white hover:bg-[#102a2b]">
+            <Button className="mt-8 rounded-full text-md px-10 py-8 bg-gold-500 text-white hover:bg-gold-600">
               Quero meu orçamento personalizado
             </Button>
           </motion.div>

@@ -103,7 +103,7 @@ export function ServiceCard({
             <p className="text-sm leading-relaxed">{description}</p>
             <div className="w-full h-[1px] bg-[#d6cfc7]" />
             <p className="text-sm text-[#646464] font-semibold tracking-wide underline underline-offset-4 flex items-center gap-2">
-              {local} <div className='h-1 w-1 rounded-full bg-[#949494]' /> {date}
+              {local} <span className='h-1 w-1 rounded-full bg-[#949494]' /> {date}
             </p>
           </CardContent>
         </Card>

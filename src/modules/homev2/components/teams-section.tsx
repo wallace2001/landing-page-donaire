@@ -55,7 +55,7 @@ const fadeUp = (delay = 0): Variants => ({
 
 export default function TeamSection() {
   return (
-    <section className="relative bg-[#f9f6f3] py-20 px-6 sm:px-12 md:px-24">
+    <section id="equipe" className="relative bg-[#f9f6f3] py-20 px-6 sm:px-12 md:px-24">
       {/* Cabeçalho com entrada suave no scroll */}
       <motion.div
         className="max-w-7xl mx-auto text-center mb-16"
