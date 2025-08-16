@@ -22,14 +22,15 @@ const listItem = (i = 0): Variants => ({
 
 export function ServicesSection() {
   return (
-    <section id="depoimentos" className="w-full bg-[#122d2f] py-20 px-6 md:px-40 pt-40">
-        <h2 className="mb-32 text-2xl font-extrabold tracking-tight text-white md:text-4xl">
+    <section id="depoimentos" className="w-full bg-[#122d2f] py-20 px-6 md:px-40 pt-20">
+      <div className='mx-auto max-w-6xl'>
+          <h2 className="mb-10 sm:mb-32 text-2xl font-extrabold tracking-tight text-white md:text-4xl">
           Nossos{' '}
           <span className="bg-gradient-to-r from-[#F5BC7B] to-[#E08B5B] bg-clip-text text-transparent">
             Depoimentos
           </span>
         </h2>
-      <motion.div
+              <motion.div
         className="max-w-7xl mx-auto flex flex-col gap-32"
         initial="hidden"
         whileInView="show"
@@ -67,6 +68,7 @@ export function ServicesSection() {
           />
         </motion.div>
       </motion.div>
+      </div>
     </section>
   )
 }
