@@ -50,7 +50,7 @@ export default function Header() {
           "fixed top-0 left-0 right-0 z-50 px-6 sm:px-10 md:px-20 lg:px-32 xl:px-40",
           "transition-[background-color,backdrop-filter,padding] duration-300",
           scrolled
-            ? "backdrop-blur-xl bg-black/50 border-b border-white/15 py-2"
+            ? "backdrop-blur-xl bg-[#122d2f]/60 border-b border-white/15 py-2"
             : "bg-transparent py-6"
         )}
       >

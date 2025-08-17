@@ -182,7 +182,7 @@ export default function HeroV2() {
           <motion.div variants={fadeUp(0.1)}>
             <Link href="#contact" onClick={(e) => handleNav(e, 'contato')}>
             <Button
-              className="mt-8 rounded-full px-10 py-8 text-md bg-gold-500 text-white hover:bg-gold-600"
+              className="mt-8 rounded-full px-6 py-8 text-md bg-gold-500 text-white hover:bg-gold-600"
               >
               QUERO MEU ORÇAMENTO PERSOALIZADO
             </Button>
