@@ -61,7 +61,7 @@ export default function TeamSection() {
         className="max-w-7xl mx-auto text-center mb-16"
         initial="hidden"
         whileInView="show"
-        viewport={{ once: true, amount: 0.4 }}
+        viewport={{ once: true, amount: 0.07 }}
         variants={container}
       >
         <motion.h2

@@ -7,7 +7,7 @@ const listContainer: Variants = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
-    transition: { staggerChildren: 0.18 },
+    transition: { staggerChildren: 0.08 },
   },
 }
 
@@ -34,7 +34,7 @@ export function ServicesSection() {
         className="max-w-7xl mx-auto flex flex-col gap-32"
         initial="hidden"
         whileInView="show"
-        viewport={{ once: true, amount: 0.25 }}
+        viewport={{ once: true, amount: 0.05 }}
         variants={listContainer}
       >
         <motion.div variants={listItem(0)}>
