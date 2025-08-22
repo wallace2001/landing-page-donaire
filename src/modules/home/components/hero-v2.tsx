@@ -4,6 +4,7 @@ import { MorphingWords } from '@/components/morphing-words'
 import { Button } from '@/components/ui/button'
 import { motion, MotionConfig, type Variants } from 'framer-motion'
 import { ArrowDown } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { MouseEvent, useEffect, useRef, useState } from 'react'
 
@@ -95,8 +96,8 @@ export default function HeroV2() {
               <source src="/videos/hero.mp4" type="video/mp4" />
             </video>
           ) : (
-            <img
-              src="/teaser/teaser1.jpg"
+            <Image
+              src="/teaser/teaser1.svg"
               alt="Fallback"
               className="absolute inset-0 h-full w-full object-cover bg-black"
             />

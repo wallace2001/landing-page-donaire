@@ -189,11 +189,10 @@ function PackageCard({ pkg }: { pkg: Pkg }) {
               width={1920}
               height={1080}
               className={cn(
-                  'object-cover border-white border-[5px] rounded-2xl',
+                  'object-cover mx-auto border-white border-[5px] rounded-2xl',
                   // até 1200px: largura controlada + altura limitada
-                  'w-full max-w-[480px] sm:max-w-[600px] md:max-w-[700px] max-h-[450px]',
+                  'w-full sm:max-w-[600px] md:max-w-[700px] max-h-[450px]',
                   // acima de 1200px: tamanho fixo
-                  'xl:w-[450px] xl:h-[300px]'
                 )}
               priority
             />
