@@ -64,7 +64,7 @@ export function ServiceCard({
   className={cn(
     'w-full mx-auto mb-4 rounded flex justify-center', // até 1200px = mobile seguro
     'xl:absolute xl:z-10 xl:w-full xl:max-w-3xl xl:mx-auto xl:-mb-12', // só acima de 1200px
-    reverse ? 'xl:-top-15 xl:-right-80' : 'xl:-top-15'
+    reverse ? 'xl:-top-15 xl:-right-50' : 'xl:-top-15 xl:-left-50'
   )}
 >
 <Image
