@@ -1,6 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 import { Variants, motion } from 'framer-motion'
 import { Check } from 'lucide-react'
 import Image from 'next/image'
@@ -22,7 +23,7 @@ const PACKAGES: Pkg[] = [
   {
     id: 'completa',
     title: 'Assessoria Completa',
-    thumb: '/casamentos/casamento2.jpeg',
+    thumb: '/casamentos/casamento2.svg',
     price: 9999,
     features: [
       'Definição do perfil dos noivos e paleta de cores',
@@ -45,7 +46,7 @@ const PACKAGES: Pkg[] = [
   {
     id: 'parcial',
     title: 'Assessoria Parcial Online',
-    thumb: '/casamentos/casamento3.jpeg',
+    thumb: '/casamentos/casamento3.svg',
     price: 6500,
     features: [
       'Orientação para fechamento de serviços',
@@ -63,7 +64,7 @@ const PACKAGES: Pkg[] = [
   {
     id: 'final',
     title: 'Assessoria Final',
-    thumb: '/casamentos/casamento4.jpeg',
+    thumb: '/casamentos/casamento4.svg',
     price: 4500,
     features: [
       'Alinhamento com fornecedores (30 dias antes)',
@@ -178,7 +179,7 @@ function PackageCard({ pkg }: { pkg: Pkg }) {
       transition={{ type: 'tween', duration: 0.5 }}
       className="rounded-2xl border border-white/10 bg-white/5 p-4 shadow-[0_1px_0_0_rgba(255,255,255,0.06)_inset] backdrop-blur-sm md:p-6"
     >
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-[280px_1fr_220px] md:items-center">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-[280px_1fr_220px] xl:items-center">
         {/* thumb */}
         <div className="overflow-hidden rounded-xl">
           <div className="relative aspect-[16/9] w-full">
@@ -187,12 +188,17 @@ function PackageCard({ pkg }: { pkg: Pkg }) {
               alt={pkg.title}
               width={1920}
               height={1080}
-              className="object-contain"
+              className={cn(
+                  'object-cover border-white border-[5px] rounded-2xl',
+                  // até 1200px: largura controlada + altura limitada
+                  'w-full max-w-[480px] sm:max-w-[600px] md:max-w-[700px] max-h-[450px]',
+                  // acima de 1200px: tamanho fixo
+                  'xl:w-[450px] xl:h-[300px]'
+                )}
               priority
             />
           </div>
         </div>
-
         {/* conteúdo */}
         <div>
           <h3 className="mb-3 text-xl font-extrabold text-white md:text-2xl">{pkg.title}</h3>
@@ -209,7 +215,7 @@ function PackageCard({ pkg }: { pkg: Pkg }) {
         </div>
 
         {/* preço / notas / CTA */}
-        <div className="md:pl-6">
+        <div className="xl:pl-6">
           <div className="text-right">
             <div className="text-3xl font-extrabold leading-none text-white">
               {hasPrice ? brl(pkg.price!) : 'Sob consulta'}

@@ -12,7 +12,7 @@ type Props = {
 
 export default function VideoWithPlayButton({
   src,
-  poster = '/videos/highlight-poster.jpg',
+  poster = '/videos/highlight-poster.svg',
 }: Props) {
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const [started, setStarted] = useState(false)

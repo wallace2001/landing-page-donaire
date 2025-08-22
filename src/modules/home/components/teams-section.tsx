@@ -7,25 +7,25 @@ const teamMembers = [
   {
     name: 'Jéssica Lima',
     role: 'CEO & Fundadora',
-    image: '/images/avatar1.jpg',
+    image: '/images/avatar1.svg',
     description: `Fundadora e mente estratégica da Donaire. Com mais de 10 anos de experiência em grandes mercados, Jéssica é especialista em diagnosticar desafios e traçar os caminhos mais eficazes para o crescimento de uma marca. Sua paixão é transformar sonhos complexos em celebrações claras e poderosas que geram resultados emocionais concretos para cada casal.`,
   },
   {
     name: 'Cris Basílio',
     role: 'Diretora comercial',
-    image: '/images/avatar2.jpg',
+    image: '/images/avatar2.svg',
     description: `Visionária por trás dos conceitos mais inovadores da Donaire. Cris combina sensibilidade artística com expertise técnica para criar experiências visuais que transcendem o comum. Sua abordagem única transforma cada casamento em uma obra de arte personalizada, onde cada detalhe conta uma história única e emocionante.`,
   },
     {
     name: 'Karêm Thássia',
     role: 'Diretora de Operações',
-    image: '/images/avatar3.jpg',
+    image: '/images/avatar3.svg',
     description: `A força organizacional que garante a execução impecável de cada projeto. Karêm Thássia é especialista em logística complexa e gestão de fornecedores, assegurando que cada casamento aconteça sem falhas. Sua atenção aos detalhes e capacidade de antever desafios fazem dela a guardiã da qualidade e pontualidade que define a Donaire.`,
   },
   {
     name: 'Jeferson',
     role: 'Especialista em Relacionamento',
-    image: '/images/avatar4.jpg',
+    image: '/images/avatar4.svg',
     description: `Ana Carolina é responsável por criar conexões genuínas com cada casal. Sua habilidade em compreender sonhos e transformá-los em realidade faz dela a ponte perfeita entre as expectativas dos clientes e a execução da equipe. Cada conversa com Ana é um passo mais próximo do casamento dos sonhos.`,
   },
 ]
@@ -104,6 +104,7 @@ export default function TeamSection() {
                 alt={member.name}
                 fill
                 className="object-cover object-top"
+                priority
               />
             </motion.div>
 

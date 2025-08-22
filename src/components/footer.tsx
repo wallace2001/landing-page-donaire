@@ -18,7 +18,7 @@ export default function Footer() {
         {/* Coluna 1 - Logo e descrição */}
         <div className="space-y-4">
           <Image
-            src="/icons/logo-gold.png"
+            src="/icons/logo-gold.svg"
             alt="Logo"
             width={80}
             height={80}

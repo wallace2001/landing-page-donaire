@@ -30,7 +30,7 @@ export function ServicesSection() {
             Depoimentos
           </span>
         </h2>
-              <motion.div
+         <motion.div
         className="max-w-7xl mx-auto flex flex-col gap-32"
         initial="hidden"
         whileInView="show"
@@ -41,7 +41,7 @@ export function ServicesSection() {
           <ServiceCard
             title="Liene & Nonato"
             description="Gostaríamos de expressar nossa mais profunda gratidão pelo cuidado, dedicação e profissionalismo que conduziu cada detalhe do nosso grande dia. Desde o primeiro contato, pudemos sentir a segurança e o carinho com que vocês abraçaram nosso sonho. Cada detalhe refletiu não só a competência, mas também o zelo que vocês colocam em tudo o que fazem. Vocês fazem muito mais do que organizar casamentos, vocês realizam sonhos!"
-            image="/casamentos/ANDR1232.jpeg"
+            image="/casamentos/ANDR1232.svg"
             local="Brasília"
             date="Dezembro 2024"
           />
@@ -51,7 +51,7 @@ export function ServicesSection() {
           <ServiceCard
             title="Giovana & Eduardo"
             description="Muito obrigada pelo apoio de vocês durante todo essa caminhada de quase 2 anos para a preparação deste dia. Vocês nos ajudaram muito e continuamos contando com o apoio de vocês hoje! Que Deus minimize cada obstáculo e abençoe esse dia tão especial para nós. Vocês são maravilhosos!"
-            image="/casamentos/061A1976.jpeg"
+            image="/casamentos/061A1976.svg"
             local="Brasília"
             date="Dezembro 2024"
             reverse
@@ -64,7 +64,7 @@ export function ServicesSection() {
             description="Como foi lindo e especial o nosso dia!! Jessica, sem palavras pra descrever o QUÃO importante foi ter uma amiga em fé como nossa cerimonialista e assessora! Quantas orações recebemos, quantas palavras do Senhor e quanto cuidado de Deus recebemos através de você e da sua equipe."
             local="Brasília"
             date="Dezembro 2024"
-            image="/casamentos/D&D-79.jpeg"
+            image="/casamentos/D&D-79.svg"
           />
         </motion.div>
       </motion.div>

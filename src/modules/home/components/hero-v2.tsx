@@ -7,13 +7,11 @@ import { ArrowDown } from 'lucide-react'
 import Link from 'next/link'
 import { MouseEvent, useEffect, useRef, useState } from 'react'
 
-// ====== Tempos ======
 const ENTER_DUR = 0.9
 const STAGGER = 0.12
 const BG_DUR = 2.2
 const BG_DELAY = 0.15
 
-// Variantes
 const container: Variants = {
   hidden: { opacity: 0 },
   show: { opacity: 1, transition: { staggerChildren: STAGGER } },
@@ -29,95 +27,53 @@ const fadeUp = (delay = 0): Variants => ({
 
 export default function HeroV2() {
   const heroRef = useRef<HTMLVideoElement | null>(null)
-  const teaserRef = useRef<HTMLVideoElement | null>(null)
-    const ref = useRef<HTMLElement>(null)
-  const [showFallback, setShowFallback] = useState(true)
+  const ref = useRef<HTMLElement>(null)
+  const [fallback, setFallback] = useState(false)
 
   useEffect(() => {
     const hero = heroRef.current
-    const teaser = teaserRef.current
-    if (!hero || !teaser) return
+    if (!hero) return
 
-    // atributos que ajudam no mobile
-    ;[hero, teaser].forEach((v) => {
-      v.muted = true
-      v.defaultMuted = true
-      v.playsInline = true
-      v.setAttribute('playsinline', '')
-      v.setAttribute('webkit-playsinline', '')
-    })
+    hero.muted = true
+    hero.defaultMuted = true
+    hero.playsInline = true
+    hero.setAttribute('playsinline', '')
+    hero.setAttribute('webkit-playsinline', '')
 
-    const tryPlay = (v: HTMLVideoElement) => v.play().catch(() => {})
+    const tryPlay = (v: HTMLVideoElement) => v.play().catch(() => setFallback(true))
 
-    // Teaser toca imediatamente
-    tryPlay(teaser)
+    const onHeroPlaying = () => setFallback(false)
+    const onHeroError = () => setFallback(true)
 
-    // Quando o hero estiver de fato tocando, esconda o teaser
-    const onHeroPlaying = () => {
-      setShowFallback(false)
-      teaser.pause()
-    }
-    const onHeroError = () => {
-      // mantém o teaser ligado
-      setShowFallback(true)
-      tryPlay(teaser)
-    }
     hero.addEventListener('playing', onHeroPlaying)
     hero.addEventListener('error', onHeroError)
     hero.addEventListener('stalled', onHeroError)
     hero.addEventListener('loadeddata', () => tryPlay(hero), { once: true })
 
-    // Pause/play conforme visibilidade do herói (economia de bateria)
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          if (showFallback) tryPlay(teaser)
-          tryPlay(hero)
-        } else {
-          teaser.pause()
-          hero.pause()
-        }
-      },
-      { threshold: 0.2 }
-    )
-    io.observe(hero)
-
-    const onVis = () => {
-      if (!document.hidden) {
-        if (showFallback) tryPlay(teaser)
-        tryPlay(hero)
-      }
-    }
-    document.addEventListener('visibilitychange', onVis)
-
     return () => {
       hero.removeEventListener('playing', onHeroPlaying)
       hero.removeEventListener('error', onHeroError)
       hero.removeEventListener('stalled', onHeroError)
-      io.disconnect()
-      document.removeEventListener('visibilitychange', onVis)
     }
-  }, [showFallback])
+  }, [])
 
-    const scrollToId = (id: string) => {
-      const el = document.getElementById(id)
-      if (!el) return
-      const headerH = ref.current ? ref.current.offsetHeight : 0
-      const top = el.getBoundingClientRect().top + window.scrollY - headerH
-      window.scrollTo({ top, behavior: 'smooth' })
-    }
+  const scrollToId = (id: string) => {
+    const el = document.getElementById(id)
+    if (!el) return
+    const headerH = ref.current ? ref.current.offsetHeight : 0
+    const top = el.getBoundingClientRect().top + window.scrollY - headerH
+    window.scrollTo({ top, behavior: 'smooth' })
+  }
 
-    const handleNav = (e: MouseEvent<HTMLAnchorElement>, id: string) => {
-      e.preventDefault()
-      scrollToId(id)
-      history.replaceState(null, '', `#${id}`)
-    }
-
+  const handleNav = (e: MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault()
+    scrollToId(id)
+    history.replaceState(null, '', `#${id}`)
+  }
 
   return (
     <MotionConfig reducedMotion="user">
       <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden text-center">
-        {/* BG vídeo com leve zoom-out cinematográfico */}
         <motion.div
           initial={{ scale: 1.08, opacity: 0.9 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -125,33 +81,26 @@ export default function HeroV2() {
           className="absolute inset-0 z-0 will-change-transform transform-gpu pointer-events-none"
           aria-hidden
         >
-          {/* HERO (arquivo principal) */}
-          <video
-            ref={heroRef}
-            className="absolute inset-0 h-full w-full object-cover bg-black"
-            poster="/teaser/teaser1.jpg"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-          >
-            <source src="/videos/hero.mp4" type="video/mp4" />
-          </video>
-
-          {/* TEASER (fallback) — fica por cima até o hero tocar */}
-          <video
-            ref={teaserRef}
-            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
-              showFallback ? 'opacity-100' : 'opacity-0 pointer-events-none'
-            }`}
-            src="/videos/hero-teaser.mp4"   // << coloque seu teaser leve (5–10s)
-            playsInline
-            autoPlay
-            muted
-            loop
-            preload="auto"
-          />
+          {!fallback ? (
+            <video
+              ref={heroRef}
+              className="absolute inset-0 h-full w-full object-cover bg-black"
+              poster="/teaser/teaser1.svg"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+            >
+              <source src="/videos/hero.mp4" type="video/mp4" />
+            </video>
+          ) : (
+            <img
+              src="/teaser/teaser1.jpg"
+              alt="Fallback"
+              className="absolute inset-0 h-full w-full object-cover bg-black"
+            />
+          )}
         </motion.div>
 
         {/* Overlay */}
@@ -181,11 +130,9 @@ export default function HeroV2() {
 
           <motion.div variants={fadeUp(0.1)}>
             <Link href="#contact" onClick={(e) => handleNav(e, 'contato')}>
-            <Button
-              className="mt-8 rounded-full px-6 py-8 text-md bg-gold-500 text-white hover:bg-gold-600"
-              >
-              QUERO MEU ORÇAMENTO PERSOALIZADO
-            </Button>
+              <Button className="mt-8 rounded-full px-6 py-8 text-md bg-gold-500 text-white hover:bg-gold-600">
+                QUERO MEU ORÇAMENTO PERSOALIZADO
+              </Button>
             </Link>
           </motion.div>
         </motion.div>

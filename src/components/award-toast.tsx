@@ -9,7 +9,7 @@ export default function AwardFixedImage() {
       <div className="relative inline-block">
         {/* Imagem */}
         <Image
-          src="/icons/award.png"
+          src="/icons/award.svg"
           alt="Prêmio 2025"
           width={100}
           height={100}

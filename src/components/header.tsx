@@ -70,7 +70,7 @@ export default function Header() {
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             >
                 <Image
-                  src="/icons/logo.png"
+                  src="/icons/logo.svg"
                   width={68}
                   height={68}
                   alt="Logo"

@@ -57,57 +57,61 @@ export function ServiceCard({
       viewport={{ once: true, amount: 0.35 }}
       variants={wrapper}
     >
-      {/* IMAGEM: igual ao original no desktop; segura no mobile */}
-      <motion.div
-        variants={imgVariants(reverse)}
-        whileHover={{ scale: 1.02, rotate: reverse ? -1 : 1 }}
-        transition={{ type: 'spring', stiffness: 220, damping: 18 }}
-        className={cn(
-          'w-full mx-auto mb-4 rounded', // mobile seguro
-          'md:absolute md:z-10 md:w-full md:max-w-3xl md:mx-auto md:-mb-12', // desktop preserva
-          reverse ? 'md:-top-15 md:-right-80' : 'md:-top-15'
-        )}
-      >
-        <Image
-          src={image}
-          alt={title}
-          width={1200}
-          height={800}
-          className={cn(
-            'w-full h-auto object-cover border-white border-[5px] rounded-2xl', // mobile
-            'md:w-[450px] md:h-[300px]' // desktop igual
-          )}
-        />
-      </motion.div>
+<motion.div
+  variants={imgVariants(reverse)}
+  whileHover={{ scale: 1.02, rotate: reverse ? -1 : 1 }}
+  transition={{ type: 'spring', stiffness: 220, damping: 18 }}
+  className={cn(
+    'w-full mx-auto mb-4 rounded flex justify-center', // até 1200px = mobile seguro
+    'xl:absolute xl:z-10 xl:w-full xl:max-w-3xl xl:mx-auto xl:-mb-12', // só acima de 1200px
+    reverse ? 'xl:-top-15 xl:-right-80' : 'xl:-top-15'
+  )}
+>
+<Image
+  src={image}
+  alt={title}
+  width={1920}
+  height={1080}
+  className={cn(
+    'object-cover border-white border-[5px] rounded-2xl',
+    // até 1200px: largura controlada + altura limitada
+    'w-full max-w-[480px] sm:max-w-[600px] md:max-w-[700px] max-h-[400px]',
+    // acima de 1200px: tamanho fixo
+    'xl:w-[450px] xl:h-[300px]'
+  )}
+/>
 
-      {/* CARD: igual ao original no desktop; mobile sem recuo lateral */}
-      <motion.div
-        variants={cardVariants}
-        className={cn(
-          'w-full h-full items-center',
-          'flex md:flex',
-          reverse ? 'md:justify-start' : 'md:justify-end',
-          'justify-center'
-        )}
-      >
-        <Card className="bg-[#fefefe] w-full md:max-w-2xl pt-6 md:pt-20 pb-8 md:pb-10 px-5 md:px-8 text-[#4c3a36]">
-          <CardContent
-            className={cn(
-              'p-0 space-y-4 border-none',
-              reverse ? 'md:pr-56' : 'md:pl-56'
-            )}
-          >
-            <h3 className="text-xl md:text-2xl font-semibold uppercase tracking-wide">
-              {title}
-            </h3>
-            <p className="text-sm leading-relaxed">{description}</p>
-            <div className="w-full h-[1px] bg-[#d6cfc7]" />
-            <p className="text-sm text-[#646464] font-semibold tracking-wide underline underline-offset-4 flex items-center gap-2">
-              {local} <span className='h-1 w-1 rounded-full bg-[#949494]' /> {date}
-            </p>
-          </CardContent>
-        </Card>
-      </motion.div>
+
+</motion.div>
+
+<motion.div
+  variants={cardVariants}
+  className={cn(
+    'w-full h-full items-center',
+    'flex xl:flex',
+    reverse ? 'xl:justify-start' : 'xl:justify-end',
+    'justify-center'
+  )}
+>
+  <Card className="bg-[#fefefe] w-full xl:max-w-2xl pt-6 xl:pt-20 pb-8 xl:pb-10 px-5 xl:px-8 text-[#4c3a36]">
+    <CardContent
+      className={cn(
+        'p-0 space-y-4 border-none',
+        reverse ? 'xl:pr-56' : 'xl:pl-56'
+      )}
+    >
+      <h3 className="text-xl xl:text-2xl font-semibold uppercase tracking-wide">
+        {title}
+      </h3>
+      <p className="text-sm leading-relaxed">{description}</p>
+      <div className="w-full h-[1px] bg-[#d6cfc7]" />
+      <p className="text-sm text-[#646464] font-semibold tracking-wide underline underline-offset-4 flex items-center gap-2">
+        {local} <span className='h-1 w-1 rounded-full bg-[#949494]' /> {date}
+      </p>
+    </CardContent>
+  </Card>
+</motion.div>
+
     </motion.div>
   )
 }

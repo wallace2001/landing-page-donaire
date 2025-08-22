@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     'Transformamos o seu sonho em um evento inesquecível',
   keywords: [],
   icons: {
-    icon: '/icons/logo.png',
+    icon: '/icons/logo.svg',
   }
 };
 
@@ -31,6 +31,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <link rel="preload" as="image" href="/teaser/teaser1.svg" />
+      <link rel="preload" as="video" href="/videos/hero.mp4" />
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
