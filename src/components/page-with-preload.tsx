@@ -7,26 +7,41 @@ export default function PageWithPreload({ children }: { children: React.ReactNod
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const images = Array.from(document.images) // pega todas as <img>
-    if (images.length === 0) {
+    const images = Array.from(document.images) // todas <img>
+    const videos = Array.from(document.querySelectorAll('video')) // todos <video>
+
+    const total = images.length + videos.length
+    if (total === 0) {
       setLoading(false)
       return
     }
 
     let loaded = 0
-    const onImgLoad = () => {
+    const onResLoad = () => {
       loaded++
-      if (loaded === images.length) {
-        setLoading(false) // só libera quando todas carregarem
+      if (loaded === total) {
+        setLoading(false)
       }
     }
 
+    // imagens
     images.forEach((img) => {
       if (img.complete) {
-        onImgLoad()
+        onResLoad()
       } else {
-        img.addEventListener('load', onImgLoad)
-        img.addEventListener('error', onImgLoad) // conta erro tbm
+        img.addEventListener('load', onResLoad)
+        img.addEventListener('error', onResLoad)
+      }
+    })
+
+    // vídeos
+    videos.forEach((vid) => {
+      if (vid.readyState >= 3) {
+        // 3 = HAVE_FUTURE_DATA, já tem dados suficientes para começar
+        onResLoad()
+      } else {
+        vid.addEventListener('loadeddata', onResLoad)
+        vid.addEventListener('error', onResLoad)
       }
     })
   }, [])

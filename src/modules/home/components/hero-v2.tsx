@@ -82,24 +82,27 @@ export default function HeroV2() {
           className="absolute inset-0 z-0 will-change-transform transform-gpu pointer-events-none"
           aria-hidden
         >
-          {!fallback ? (
-            <video
-              ref={heroRef}
-              className="absolute inset-0 h-full w-full object-cover bg-black"
-              poster="/teaser/teaser1.svg"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="auto"
-            >
-              <source src="/videos/hero.mp4" type="video/mp4" />
-            </video>
-          ) : (
+          <video
+            ref={heroRef}
+            className="absolute inset-0 h-full w-full object-cover bg-black"
+            autoPlay
+            muted
+            loop
+            webkit-playsinline="true"
+            playsInline
+            preload="auto"
+          >
+            <source src="/videos/hero.mp4" type="video/mp4" />
+          </video>
+
+          {fallback && (
             <Image
               src="/teaser/teaser1.svg"
               alt="Fallback"
-              className="absolute inset-0 h-full w-full object-cover bg-black"
+              fill
+              priority
+              className="object-contain"
+              sizes="100vw"
             />
           )}
         </motion.div>
