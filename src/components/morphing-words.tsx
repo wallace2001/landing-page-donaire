@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 
-const words = ['Elegância', 'Amor', 'Histórias', 'Momentos', 'Casamentos']
+const words = ['Elegância', 'Amor', 'Histórias', 'Casamentos']
 
 export function MorphingWords() {
   const [wordIndex, setWordIndex] = useState(0)

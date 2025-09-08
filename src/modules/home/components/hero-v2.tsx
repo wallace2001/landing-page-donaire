@@ -34,23 +34,18 @@ export default function HeroV2() {
   useEffect(() => {
     const hero = heroRef.current
     if (!hero) return
-
     hero.muted = true
     hero.defaultMuted = true
     hero.playsInline = true
     hero.setAttribute('playsinline', '')
     hero.setAttribute('webkit-playsinline', '')
-
     const tryPlay = (v: HTMLVideoElement) => v.play().catch(() => setFallback(true))
-
     const onHeroPlaying = () => setFallback(false)
     const onHeroError = () => setFallback(true)
-
     hero.addEventListener('playing', onHeroPlaying)
     hero.addEventListener('error', onHeroError)
     hero.addEventListener('stalled', onHeroError)
     hero.addEventListener('loadeddata', () => tryPlay(hero), { once: true })
-
     return () => {
       hero.removeEventListener('playing', onHeroPlaying)
       hero.removeEventListener('error', onHeroError)
@@ -74,9 +69,11 @@ export default function HeroV2() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden text-center">
+      {/* svh melhora a área útil no mobile */}
+      <section className="relative flex min-h-[90svh] md:min-h-screen flex-col justify-center overflow-hidden" ref={ref}>
+        {/* BACKDROP */}
         <motion.div
-          initial={{ scale: 1.08, opacity: 0.9 }}
+          initial={{ scale: 1.02, opacity: 0.95 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: 'tween', duration: BG_DUR, delay: BG_DELAY, ease: [0.22, 1, 0.36, 1] }}
           className="absolute inset-0 z-0 will-change-transform transform-gpu pointer-events-none"
@@ -84,11 +81,10 @@ export default function HeroV2() {
         >
           <video
             ref={heroRef}
-            className="absolute inset-0 h-full w-full object-cover bg-black"
+            className="absolute inset-0 h-full w-full object-cover object-[center_45%] sm:object-[center_35%] bg-black"
             autoPlay
             muted
             loop
-            webkit-playsinline="true"
             playsInline
             preload="auto"
           >
@@ -101,41 +97,49 @@ export default function HeroV2() {
               alt="Fallback"
               fill
               priority
-              className="object-contain"
+              className="object-cover object-[center_45%] sm:object-[center_35%]"
               sizes="100vw"
             />
           )}
         </motion.div>
 
-        {/* Overlay */}
-        <div className="absolute inset-0 z-10 bg-black/40" />
+        {/* OVERLAYS */}
+        {/* Overlay global mais leve no mobile */}
+        <div className="absolute inset-0 z-10 bg-black/10 sm:bg-black/20" />
+        {/* Gradiente MENOR no mobile, maior no desktop */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-[70%] sm:w-[55%] bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
 
-        {/* Conteúdo */}
+        {/* CONTEÚDO — compacto no mobile, normal no desktop */}
         <motion.div
-          className="relative z-20 max-w-4xl px-4 text-white"
+          className="relative z-20 mr-auto w-full sm:max-w-3xl md:max-w-2xl px-4 sm:px-6 md:pl-28 text-white text-center sm:text-left
+                    mt-auto mb-24 sm:mb-44"   // 👈 empurra para o final e dá respiro da onda
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, amount: 0.5 }}
           variants={container}
         >
           <motion.span
-            className="block text-3xl font-extralight leading-tight sm:text-5xl md:text-6xl"
+            className="block text-xl sm:text-4xl md:text-5xl font-extralight leading-tight"
             variants={fadeUp()}
           >
-            Transformamos o seu sonho em um evento inesquecível com <br />
+            Transformamos o seu sonho em um momento inesquecível com <br />
             <span className="inline-block align-top">
               <MorphingWords />
             </span>
           </motion.span>
 
-          <motion.p className="mt-4 text-base font-light md:text-lg" variants={fadeUp(0.05)}>
+          {/* Parágrafo some no mobile, aparece a partir de sm */}
+          <motion.p
+            className="hidden sm:block mt-4 text-base md:text-lg font-light opacity-95"
+            variants={fadeUp(0.05)}
+          >
             Transforme o seu grande dia em uma experiência inesquecível com uma assessoria que cuida de cada detalhe com sofisticação e amor.
           </motion.p>
 
           <motion.div variants={fadeUp(0.1)}>
             <Link href="#contact" onClick={(e) => handleNav(e, 'contato')}>
-              <Button className="mt-8 rounded-full px-6 py-8 text-md bg-gold-500 text-white hover:bg-gold-600">
-                QUERO MEU ORÇAMENTO PERSOALIZADO
+              <Button className="mt-6 sm:mt-7 rounded-full px-4 py-4 sm:px-5 sm:py-6 text-xs sm:text-base bg-gold-500 text-white hover:bg-gold-600">
+                QUERO MEU ORÇAMENTO PERSONALIZADO
               </Button>
             </Link>
           </motion.div>
@@ -144,7 +148,7 @@ export default function HeroV2() {
         {/* Onda + seta */}
         <div className="absolute bottom-0 z-20 w-full overflow-hidden">
           <svg
-            className="h-32 w-full text-background"
+            className="h-24 sm:h-32 w-full text-background"
             viewBox="0 0 1200 120"
             preserveAspectRatio="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -153,13 +157,13 @@ export default function HeroV2() {
           </svg>
 
           <motion.div
-            className="flex -mt-8 justify-center"
+            className="flex -mt-6 sm:-mt-8 justify-center"
             initial={{ opacity: 0, y: 8 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ type: 'tween', duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
-            <ArrowDown className="h-8 w-8 animate-bounce" style={{ color: '#153b3d' }} />
+            <ArrowDown className="h-7 w-7 sm:h-8 sm:w-8 animate-bounce" style={{ color: '#153b3d' }} />
           </motion.div>
         </div>
       </section>

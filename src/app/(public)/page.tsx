@@ -5,9 +5,9 @@ import ContactSection from "@/modules/home/components/contact-section";
 import FloatingButtons from "@/modules/home/components/floating-buttons";
 import HeroV2 from "@/modules/home/components/hero-v2";
 import { PackagesSection } from "@/modules/home/components/package-section";
-import { ServicesSection } from "@/modules/home/components/service-section";
 import { ServicesSectionV2 } from "@/modules/home/components/service-sectionV2";
 import TeamSection from "@/modules/home/components/teams-section";
+import TestimonialsCarouselSection from "@/modules/home/components/testimonial-card";
 
 export default function Home() {
   return (
@@ -15,7 +15,8 @@ export default function Home() {
       <HeroV2 />
       <AboutSection />
       <TeamSection />
-      <ServicesSection />
+      <TestimonialsCarouselSection />
+      {/* <ServicesSection /> */}
       <ServicesSectionV2 />
       <PackagesSection />
       <FloatingButtons />
