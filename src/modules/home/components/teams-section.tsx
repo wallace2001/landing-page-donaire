@@ -6,13 +6,13 @@ import Image from 'next/image'
 const teamMembers = [
   {
     name: 'Jéssica Lima',
-    role: 'CEO & Fundadora',
+    role: 'Responsável pela gestão da equipe e do evento',
     image: '/images/avatar1.svg',
     description: `Fundadora e mente estratégica da Donaire. Com mais de 10 anos de experiência em grandes mercados, Jéssica é especialista em diagnosticar desafios e traçar os caminhos mais eficazes para o crescimento de uma marca. Sua paixão é transformar sonhos complexos em celebrações claras e poderosas que geram resultados emocionais concretos para cada casal.`,
   },
   {
     name: 'Cris Basílio',
-    role: 'Diretora comercial',
+    role: 'Responsável pelo atendimento',
     image: '/images/avatar2.svg',
     description: `Visionária por trás dos conceitos mais inovadores da Donaire. Cris combina sensibilidade artística com expertise técnica para criar experiências visuais que transcendem o comum. Sua abordagem única transforma cada casamento em uma obra de arte personalizada, onde cada detalhe conta uma história única e emocionante.`,
   },
@@ -24,7 +24,7 @@ const teamMembers = [
   },
   {
     name: 'Jeferson',
-    role: 'Especialista em Relacionamento',
+    role: 'Cerimoniário Especialista em eventos Cristãos',
     image: '/images/avatar4.svg',
     description: `Ana Carolina é responsável por criar conexões genuínas com cada casal. Sua habilidade em compreender sonhos e transformá-los em realidade faz dela a ponte perfeita entre as expectativas dos clientes e a execução da equipe. Cada conversa com Ana é um passo mais próximo do casamento dos sonhos.`,
   },
@@ -56,28 +56,28 @@ const fadeUp = (delay = 0): Variants => ({
 export default function TeamSection() {
   return (
     <section id="equipe" className="relative bg-[#f9f6f3] py-20 px-6 sm:px-12 md:px-24">
-      {/* Cabeçalho com entrada suave no scroll */}
-      <motion.div
-        className="max-w-7xl mx-auto text-center mb-16"
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.07 }}
-        variants={container}
-      >
-        <motion.h2
-          className="text-3xl text-[var(--april-400)] tracking-wide mb-2"
-          variants={fadeUp()}
-        >
-          Conheça a Equipe
-        </motion.h2>
-        <motion.p
-          className="text-md text-[var(--april-500)]"
-          variants={fadeUp(0.2)}
-        >
-          Profissionais dedicados para tornar seu dia inesquecível.
-        </motion.p>
-      </motion.div>
-
+          {/* Cabeçalho */}
+          <motion.header
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.12 }}
+            variants={container}
+            className="text-center mb-12"
+          >
+            <h2
+              id="team-heading"
+              className="text-[clamp(22px,4.5vw,36px)] font-light tracking-tight text-[var(--april-400)]"
+            >
+              Conheça a <span className="font-semibold">Equipe</span>
+            </h2>
+            <motion.p
+              variants={fadeUp(0.15)}
+              className="mt-2 text-[clamp(14px,2.2vw,16px)] text-[var(--april-500)]"
+            >
+              Profissionais dedicados para tornar seu dia inesquecível.
+            </motion.p>
+            <div className="mx-auto mt-5 h-[3px] w-24 rounded-full bg-[var(--april-400)]/15" />
+          </motion.header>
       {/* Grid: anima ao entrar na viewport + stagger */}
       <motion.div
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-16 max-w-7xl mx-auto"

@@ -29,9 +29,9 @@ type FormValues = z.infer<typeof schema>
 
 const PACKAGE_OPTIONS = [
   'Sem Preferência',
-  'Assessoria Completa',
-  'Assessoria Parcial Online',
-  'Assessoria Final',
+  'POSTURE — Assessoria Completa',
+  'ELEGANCE — Assessoria VIP',
+  'GRACE — Assessoria Final',
   'Pacote Personalizado',
 ]
 

@@ -1,112 +1,175 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import { useQuoteStore } from '@/modules/store/quote-store'
-import { Variants, motion } from 'framer-motion'
-import { Check } from 'lucide-react'
+import { motion, MotionConfig, Variants } from 'framer-motion'
+import { Check, Crown, Star, Trophy } from 'lucide-react'
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
 
+type Installment = { n: number; value: number }
 type Pkg = {
-  id: string
+  id: 'grace' | 'posture' | 'elegance' | 'personalizado'
+  tierLabel: string
   title: string
+  subtitle?: string
   thumb: string
   price?: number | null
-  installment?: { n: number; value: number }
+  installment?: Installment
   features: string[]
   notes?: string[]
+  highlight?: 'bestseller' | 'vip'
 }
 
 const ACCENT = 'from-[#F5BC7B] to-[#E08B5B]'
+const BG = '#122d2f'
 
-const BASE_PACKAGES: Pkg[] = [
+// ===== helpers
+const brl = (v?: number | null) =>
+  (typeof v === 'number' ? v : 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+const calcInstallment = (price?: number | null, n = 12): Installment | undefined =>
+  typeof price === 'number' && price > 0 ? { n, value: Math.ceil((price / n) * 100) / 100 } : undefined
+
+// ===== animations
+const gridV: Variants = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.06 } } }
+const cardV: Variants = { hidden: { opacity: 0, y: 14 }, show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] } } }
+const itemV: Variants = { hidden: { opacity: 0, x: -8 }, show: { opacity: 1, x: 0, transition: { duration: 0.35 } } }
+
+// ===== data (use os seus pacotes oficiais)
+const OFFICIAL_PACKAGES: Pkg[] = [
   {
-    id: 'completa',
-    title: 'Assessoria Completa',
-    thumb: '/casamentos/casamento2.svg',
-    price: null,
-    features: [
-      'Definição do perfil dos noivos e paleta de cores',
-      'Criação da identidade visual do evento',
-      'Planejamento detalhado e organização da agenda',
-      'Mentoria financeira',
-      'Pesquisa, indicação e negociação com fornecedores',
-      'Revisão de contratos e controle do que foi fechado',
-      'Acompanhamento em degustações e escolha de trajes',
-      'Reuniões semanais por videoconferência e tira-dúvidas',
-      'Orientação para site dos noivos e confirmação de presença',
-      'Acompanhamento em prévias/ensaios e visitas técnicas',
-      'Cerimonial completo no dia (alinhamento e supervisão de fornecedores)',
-      'Recepção de convidados e coordenação da cerimônia/recepção',
-      'Coordenação de momentos especiais (valsa, bolo, etc.)',
-      'Relatório final pós-evento',
-    ],
-    notes: ['Formato: Online + Presencial + Cerimonial'],
-  },
-  {
-    id: 'parcial',
-    title: 'Assessoria Parcial Online',
-    thumb: '/casamentos/casamento3.svg',
-    price: null,
-    features: [
-      'Orientação para fechamento de serviços',
-      'Indicação de fornecedores',
-      'Reuniões semanais por videoconferência e tira-dúvidas',
-      'Planejamento do evento e mentoria financeira online',
-      'Organização da agenda e agendamento de degustações',
-      'Orientação para paleta de cores e identidade visual',
-      'Confirmação de presença dos convidados',
-      'Acompanhamento em prévias',
-      'Cerimonial completo no dia',
-    ],
-    notes: ['Formato: Online + Cerimonial'],
-  },
-  {
-    id: 'final',
+    id: 'grace',
+    tierLabel: 'GRACE',
     title: 'Assessoria Final',
     thumb: '/casamentos/casamento4.svg',
-    price: null,
+    price: 4697,
+    installment: calcInstallment(4697, 12),
     features: [
-      'Alinhamento com fornecedores (30 dias antes)',
-      'Planejamento detalhado da cerimônia e recepção',
-      'Ensaio do cortejo e briefing do dia',
-      'Acompanhamento da montagem da decoração',
-      'Conferência de cardápio, bebidas e buffet; recebimento de doces',
-      'Supervisão de todos os fornecedores',
-      'Recepção de convidados e etiquetagem de presentes',
-      'Coordenação de momentos (valsa, bolo, primeira dança, etc.)',
-      'Distribuição de lembrancinhas e adereços da pista',
-      'Atendimento a emergências; supervisão de higiene e segurança',
-      'Relatório final pós-evento',
+      'Acompanhamento on-line e reunião de alinhamento (≈50 dias antes)',
+      'Levantamento de contratos e conferência técnica/logística',
+      'Contato com fornecedores e alinhamento final (semana do evento)',
+      'Roteiro completo do evento',
+      'Ensaio na semana do evento',
+      'Acompanhamento de montagem e gestão de imprevistos',
+      'Coordenação integral no dia do casamento',
     ],
-    notes: ['Formato: Cerimonial'],
+    notes: ['Formato: Cerimonial + Preparação final'],
   },
-]
-
-const COMPLETE_FEATURES = BASE_PACKAGES.find(p => p.id === 'completa')?.features ?? []
-
-const PACKAGES: Pkg[] = [
-  ...BASE_PACKAGES,
   {
-    id: 'personalizado',
-    title: 'Pacote Personalizado',
-    thumb: '/casamentos/casamento5.svg',
-    price: null,
-    features: COMPLETE_FEATURES,
-    notes: ['Monte o pacote escolhendo os serviços desejados'],
+    id: 'posture',
+    tierLabel: 'POSTURE',
+    title: 'Assessoria Completa',
+    thumb: '/casamentos/casamento2.svg',
+    price: 6997,
+    installment: calcInstallment(6997, 12),
+    features: [
+      'Acompanhamento online e parcialmente presencial',
+      'Indicação e acompanhamento de fornecedores',
+      'Suporte em negociação e fechamento de contratos',
+      'Reuniões de alinhamento mensais',
+      'Levantamento de contratos + conferência técnica / logística',
+      'Alinhamento final com fornecedores (semana do evento)',
+      'Roteiro completo + ensaio na semana do evento',
+      'Acompanhamento da montagem + gestão de imprevistos',
+      'Coordenação integral no dia do casamento',
+    ],
+    notes: ['Formato: Online + Presencial + Cerimonial'],
+    highlight: 'bestseller',
+  },
+  {
+    id: 'elegance',
+    tierLabel: 'ELEGANCE',
+    title: 'Assessoria VIP',
+    subtitle: 'Completa VIP',
+    thumb: '/casamentos/casamento3.svg',
+    price: 9997,
+    installment: calcInstallment(9997, 12),
+    features: [
+      'Consultoria do pré ao pós-evento',
+      'Planejamento orçamentário + controle financeiro',
+      'Pesquisa/seleção de fornecedores + acompanhamento em reuniões e degustações',
+      'Análise e negociação de contratos (segurança jurídica/financeira)',
+      'Gestão completa do cronograma + alinhamentos estratégicos',
+      'Planejamento e logística detalhados (cerimônia e recepção)',
+      'Roteiros técnicos de montagem / cerimônia / recepção / desmontagem',
+      'Reuniões semanais de acompanhamento',
+      'Coordenação integral no dia, equipe dedicada ao casal/família',
+      'Atendimento VIP e suporte exclusivo em cada etapa',
+      'Acompanhamento de montagem + relatório pós-evento',
+    ],
+    notes: ['Formato: Premium completo + VIP'],
+    highlight: 'vip',
   },
 ]
 
-const brl = (v?: number | null) => {
-  const n = typeof v === 'number' ? v : 0
-  return n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2 })
+const PERSONALIZADO: Pkg = {
+  id: 'personalizado',
+  tierLabel: 'CUSTOM',
+  title: 'Pacote Personalizado',
+  thumb: '/casamentos/casamento1.svg',
+  price: null,
+  features: [
+      'Consultoria do pré ao pós-evento',
+      'Planejamento orçamentário + controle financeiro',
+      'Pesquisa/seleção de fornecedores + acompanhamento em reuniões e degustações',
+      'Análise e negociação de contratos (segurança jurídica/financeira)',
+      'Gestão completa do cronograma + alinhamentos estratégicos',
+      'Planejamento e logística detalhados (cerimônia e recepção)',
+      'Roteiros técnicos de montagem / cerimônia / recepção / desmontagem',
+      'Reuniões semanais de acompanhamento',
+      'Coordenação integral no dia, equipe dedicada ao casal/família',
+      'Atendimento VIP e suporte exclusivo em cada etapa',
+      'Acompanhamento de montagem + relatório pós-evento',
+  ],
+  notes: ['Selecione os itens e receba a proposta final'],
 }
 
-const gridV: Variants = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.03 } } }
-const cardV: Variants = { hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } } }
-const itemV: Variants = { hidden: { opacity: 0, x: -8 }, show: { opacity: 1, x: 0, transition: { duration: 0.5 } } }
+// ===== UI bits
+function Badge({ type }: { type: 'bestseller' | 'vip' }) {
+  if (type === 'vip') {
+    return (
+      <div className="absolute right-3 top-3 z-10 flex items-center gap-1 rounded-full bg-black/70 px-3 py-1 text-xs text-white backdrop-blur">
+        <Crown className="h-3.5 w-3.5 text-yellow-400" /> VIP
+      </div>
+    )
+  }
+  return (
+    <div className="absolute right-3 top-3 z-10 flex items-center gap-1 rounded-full bg-white px-3 py-1 text-xs text-[#111] shadow">
+      <Trophy className="h-3.5 w-3.5 text-amber-600" /> Mais escolhido
+    </div>
+  )
+}
 
+function FeatureItem({ text }: { text: string }) {
+  return (
+    <motion.li variants={itemV} className="flex items-start gap-3 text-[15px] text-white/90">
+      <span className="mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-white/10 shrink-0">
+        <Check className="h-4 w-4 text-white" />
+      </span>
+      <span className="min-w-0 break-words">{text}</span>
+    </motion.li>
+  )
+}
+
+function PriceBlock({ price, installment }: { price?: number | null; installment?: Installment }) {
+  const has = typeof price === 'number' && price > 0
+  return (
+    <div className="text-center sm:text-right">
+      <div className="text-[clamp(20px,2.6vw,32px)] font-extrabold leading-none text-white">
+        {has ? brl(price) : 'Sob consulta'}
+      </div>
+      {has && installment && (
+        <div className="mt-1 text-sm text-white/75">
+          ou {installment.n}x {brl(installment.value)}
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ===== scroll helper
 function scrollToContact() {
   const el = document.getElementById('contato')
   const header = document.querySelector('header') as HTMLElement | null
@@ -117,148 +180,224 @@ function scrollToContact() {
   }
 }
 
-export function PackagesSection() {
-  return (
-    <section id="pacotes" className="w-full bg-[#122d2f] px-6 pt-12 pb-24 sm:px-12 md:px-24">
-      <div className="mx-auto max-w-6xl">
-        <motion.h2
-          className="mb-10 text-2xl font-extrabold tracking-tight text-white md:text-4xl"
-          initial={{ opacity: 0, y: 8 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.4 }}
-        >
-          Nossos <span className={`bg-gradient-to-r ${ACCENT} bg-clip-text text-transparent`}>Pacotes</span>
-        </motion.h2>
+// ===== Card VERTICAL (novo layout)
+function PackageCard({
+  pkg,
+  personalizedSelected,
+  onPersonalToggle,
+  onSelectFixed,
+}: {
+  pkg: Pkg
+  personalizedSelected?: string[]
+  onPersonalToggle?: (f: string) => void
+  onSelectFixed?: () => void
+}) {
+  const isPersonalizado = pkg.id === 'personalizado'
+  const hasBadge = pkg.highlight === 'bestseller' || pkg.highlight === 'vip'
 
-        <motion.div variants={gridV} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.03 }} className="space-y-6">
-          {PACKAGES.map((p) => (
-            <PackageCard key={p.id} pkg={p} />
-          ))}
-        </motion.div>
+  return (
+    <motion.div
+      variants={cardV}
+      whileHover={{ y: -3 }}
+      transition={{ type: 'tween', duration: 0.35 }}
+      className={[
+        // container
+        'group relative flex h-full min-h-[560px] flex-col overflow-hidden rounded-2xl',
+        'border border-white/10 bg-white/[0.06] shadow-[0_1px_0_0_rgba(255,255,255,0.06)_inset,0_10px_26px_rgba(0,0,0,0.18)]',
+        'backdrop-blur-md isolate',
+      ].join(' ')}
+    >
+      {/* badge */}
+      {hasBadge && <Badge type={pkg.highlight as 'bestseller' | 'vip'} />}
+
+      {/* capa */}
+      <div className="relative w-full aspect-[16/9]">
+        <Image
+          src={pkg.thumb}
+          alt={pkg.title}
+          fill
+          className="object-cover"
+          sizes="(min-width:1280px) 420px, (min-width:768px) 50vw, 100vw"
+          priority
+        />
+        {/* overlay sutil + borda arredondada */}
+        <div className="absolute inset-0 ring-1 ring-white/10"></div>
       </div>
-    </section>
+
+      {/* header */}
+      <div className="px-5 pt-4">
+        <div className="mb-2 flex flex-wrap items-center gap-2">
+          <span className="inline-flex items-center rounded-full border border-white/15 bg-white/10 px-2 py-1 text-[10px] uppercase tracking-[0.14em] text-white/85">
+            {pkg.tierLabel}
+          </span>
+          {pkg.subtitle && <span className="text-xs text-white/70">{pkg.subtitle}</span>}
+        </div>
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <h3 className="text-[clamp(18px,2.6vw,22px)] font-semibold text-white">{pkg.title}</h3>
+          {!isPersonalizado && <PriceBlock price={pkg.price} installment={pkg.installment} />}
+        </div>
+      </div>
+
+      {/* divider */}
+      <div className={`mx-5 my-4 h-[2px] rounded bg-gradient-to-r ${ACCENT}`} />
+
+      {/* lista de features (cresce e pode rolar se necessário) */}
+      <motion.ul
+        variants={{ show: { transition: { staggerChildren: 0.18 } } }}
+        initial={false}
+        animate="show"
+        className="mx-5 flex-1 space-y-2 overflow-hidden"
+      >
+        <div className="max-h-[260px] overflow-auto pr-1 [scrollbar-width:thin] [scrollbar-color:rgba(255,255,255,0.25)_transparent]">
+          {pkg.features.map((f, i) => (
+            <div key={i} className="flex items-start">
+              {isPersonalizado ? (
+                <label className="flex cursor-pointer select-none items-start gap-3 text-white/90">
+                  <input
+                    type="checkbox"
+                    className="mt-1 h-4 w-4 accent-[#E08B5B] shrink-0"
+                    checked={personalizedSelected?.includes(f) ?? false}
+                    onChange={() => onPersonalToggle?.(f)}
+                    aria-label={`Selecionar serviço: ${f}`}
+                  />
+                  <span className="text-[15px] break-words">{f}</span>
+                </label>
+              ) : (
+                <FeatureItem text={f} />
+              )}
+            </div>
+          ))}
+        </div>
+      </motion.ul>
+
+      {/* notas */}
+      {pkg.notes && (
+        <div className="mx-5 mt-3 text-right text-xs text-white/75">
+          {pkg.notes.map((n, i) => (
+            <p key={i} className="break-words">{n}</p>
+          ))}
+        </div>
+      )}
+
+      {/* CTA fixado ao rodapé do card */}
+      <div className="mt-5 px-5 pb-5">
+        <Button
+          className="w-full bg-white text-[#122d2f] hover:bg-white/90"
+          onClick={() => {
+            if (isPersonalizado) {
+              if (!personalizedSelected?.length) return toast.warning('Selecione pelo menos 1 serviço.')
+              toast.info('Pacote selecionado!', { description: 'Personalizado marcado. Revise no formulário.', duration: 2500 })
+              scrollToContact()
+            } else {
+              onSelectFixed?.()
+            }
+          }}
+          disabled={isPersonalizado && !personalizedSelected?.length}
+        >
+          {isPersonalizado ? 'Montar meu pacote' : 'Solicitar proposta'}
+        </Button>
+      </div>
+    </motion.div>
   )
 }
 
-function PackageCard({ pkg }: { pkg: Pkg }) {
-  const hasPrice = typeof pkg.price === 'number' && pkg.price! > 0
-  const isPersonalizado = pkg.id === 'personalizado'
-  const [localSelected, setLocalSelected] = useState<string[]>([])
+// ===== Section
+export function PackagesSection() {
+  const { setPackage, toggleService, clearServices, selectedPackage, selectedServices } = useQuoteStore()
+  const [personalSelected, setPersonalSelected] = useState<string[]>([])
+  const packages = useMemo(() => [...OFFICIAL_PACKAGES, PERSONALIZADO], [])
 
-  const { selectedPackage, setPackage, toggleService, clearServices, selectedServices } = useQuoteStore()
+  useEffect(() => {
+    if (selectedPackage === 'Pacote Personalizado') setPersonalSelected(selectedServices)
+  }, [selectedPackage, selectedServices])
 
-  // Se o usuário clicar em qualquer pacote (não personalizado), setamos o pacote e limpamos serviços
-  const selectFixedPackage = () => {
-    setPackage(pkg.title)
+  const selectFixedPackage = (title: string) => {
+    setPackage(title)
     clearServices()
-    toast.info('Pacote selecionado!', { description: `Selecionamos “${pkg.title}”.`, duration: 2500 })
+    toast.info('Pacote selecionado!', { description: `Selecionamos “${title}”.`, duration: 2500 })
     scrollToContact()
   }
 
-  // Para o personalizado: sincroniza serviços no store e garante selectedPackage = 'Pacote Personalizado'
   const onTogglePersonalizado = (f: string) => {
     if (selectedPackage !== 'Pacote Personalizado') {
       setPackage('Pacote Personalizado')
       clearServices()
-      setLocalSelected([f])
+      setPersonalSelected([f])
       toggleService(f)
     } else {
-      setLocalSelected((prev) => (prev.includes(f) ? prev.filter(s => s !== f) : [...prev, f]))
+      setPersonalSelected(prev => (prev.includes(f) ? prev.filter(s => s !== f) : [...prev, f]))
       toggleService(f)
     }
   }
 
-  // Mantém o estado local alinhado com o store ao montar/trocar (útil se vier de outra seção)
-  useEffect(() => {
-    if (isPersonalizado) {
-      setLocalSelected(selectedServices)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isPersonalizado, selectedServices.join('|')])
-
   return (
-    <motion.div variants={cardV} whileHover={{ y: -2 }} transition={{ type: 'tween', duration: 0.5 }} className="rounded-2xl border border-white/10 bg-white/5 p-4 shadow-[0_1px_0_0_rgba(255,255,255,0.06)_inset] backdrop-blur-sm md:p-6">
-      <div className="grid grid-cols-1 gap-6 xl:grid-cols-[280px_1fr_220px] xl:items-center">
-        {/* thumb — tamanho 100% uniforme */}
-        <div className="overflow-hidden rounded-2xl">
-          <div className="relative w-full aspect-[16/9] sm:aspect-[3/2] md:aspect-[4/3] xl:h-[180px] xl:aspect-auto">
-            <Image src={pkg.thumb} alt={pkg.title} fill className="object-cover border-white border-[5px] rounded-2xl" sizes="(min-width:1280px) 280px, (min-width:768px) 50vw, 100vw" priority />
+    <MotionConfig reducedMotion="user">
+      <section id="pacotes" className="w-full" style={{ backgroundColor: BG }}>
+        <div className="mx-auto max-w-7xl px-6 pt-12 pb-24 sm:px-8 md:px-12">
+          {/* header */}
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.4 }}
+          >
+            <h2 className="mb-2 text-[clamp(22px,4.6vw,40px)] font-extrabold tracking-tight text-white">
+              Nossos <span className={`bg-gradient-to-r ${ACCENT} bg-clip-text text-transparent`}>Pacotes</span>
+            </h2>
+            <p className="text-sm text-white/80">
+              Escolha o nível de acompanhamento ideal — do suporte final ao atendimento VIP do início ao fim.
+            </p>
+          </motion.div>
+
+          {/* faixa de confiança */}
+          <div className="mt-6 flex flex-wrap items-center gap-4 text-white/80">
+            <div className="flex items-center gap-2">
+              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+              <span className="text-xs">+60 avaliações no Casamentos.com.br</span>
+            </div>
+            <div className="hidden h-3 w-px bg-white/20 sm:block" />
+            <span className="text-xs">Equipe dedicada · Planejamento financeiro · Roteiros técnicos</span>
+          </div>
+
+          {/* GRID: auto-fit vertical cards */}
+          <motion.div
+            variants={gridV}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.06 }}
+            className="mt-10 grid [grid-template-columns:repeat(auto-fit,minmax(300px,1fr))] gap-7 lg:gap-8"
+          >
+            {packages.map(pkg => (
+              <PackageCard
+                key={pkg.id}
+                pkg={pkg}
+                personalizedSelected={personalSelected}
+                onPersonalToggle={onTogglePersonalizado}
+                onSelectFixed={() => selectFixedPackage(`${pkg.tierLabel} — ${pkg.title}`)}
+              />
+            ))}
+          </motion.div>
+
+          {/* Comparativo compacto (desktop) */}
+          <div className="mt-14 hidden md:block rounded-2xl border border-white/10 bg-white/[0.04] p-6">
+            <h3 className="text-white text-[clamp(16px,2vw,20px)] font-semibold mb-4">Comparativo rápido</h3>
+            <div className="grid grid-cols-3 gap-6 text-sm text-white/85">
+              <Card className="bg-transparent border-white/10 p-4">
+                <p className="font-semibold">GRACE — Final</p>
+                <p className="mt-1">Reta final + ensaio + roteiro + dia do evento</p>
+              </Card>
+              <Card className="bg-transparent border-white/10 p-4">
+                <p className="font-semibold">POSTURE — Completa</p>
+                <p className="mt-1">Percurso completo, fornecedores, reuniões mensais, dia do evento</p>
+              </Card>
+              <Card className="bg-transparent border-white/10 p-4">
+                <p className="font-semibold">ELEGANCE — VIP</p>
+                <p className="mt-1">Consultoria total + financeiro, reuniões semanais, equipe dedicada</p>
+              </Card>
+            </div>
           </div>
         </div>
-
-        {/* conteúdo */}
-        <div>
-          <h3 className="mb-3 text-xl font-extrabold text-white md:text-2xl">{pkg.title}</h3>
-
-          <motion.ul variants={{ show: { transition: { staggerChildren: 0.3 } } }} initial={false} animate="show" className="space-y-2">
-            {pkg.features.map((f, i) => (
-              <motion.li key={i} variants={itemV} className="flex items-start gap-3 text-base text-white/90">
-                {isPersonalizado ? (
-                  <input
-                    type="checkbox"
-                    checked={localSelected.includes(f)}
-                    onChange={() => onTogglePersonalizado(f)}
-                    className="mt-1 h-4 w-4 accent-[#E08B5B]"
-                    aria-label={`Selecionar serviço: ${f}`}
-                  />
-                ) : (
-                  <span className="mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-white/10">
-                    <Check className="h-4 w-4 text-white" />
-                  </span>
-                )}
-                <span>{f}</span>
-              </motion.li>
-            ))}
-          </motion.ul>
-        </div>
-
-        {/* preço / notas / CTA */}
-        <div className="xl:pl-6">
-          {!isPersonalizado && (
-            <div className="text-right">
-              <div className="text-3xl font-extrabold leading-none text-white">{hasPrice ? brl(pkg.price) : 'Sob consulta'}</div>
-              {hasPrice && pkg.installment && <div className="mt-1 text-sm text-white/70">ou {pkg.installment.n}x {brl(pkg.installment.value)}</div>}
-            </div>
-          )}
-
-          {isPersonalizado && (
-            <div className="mb-2 text-right text-sm text-white/80">
-              {localSelected.length > 0 ? `${localSelected.length} serviço(s) selecionado(s)` : 'Selecione os serviços que deseja'}
-            </div>
-          )}
-
-          <div className={`my-4 h-[2px] w-full rounded bg-gradient-to-r ${ACCENT}`} />
-
-          {pkg.notes && (
-            <div className="mb-3 space-y-1 text-right text-sm text-white/80">
-              {pkg.notes.map((n, i) => (<p key={i}>{n}</p>))}
-            </div>
-          )}
-
-          <Button
-            className="w-full bg-white text-[#122d2f] hover:bg-white/90"
-            onClick={() => {
-              if (isPersonalizado) {
-                if (localSelected.length === 0) {
-                  toast.warning('Selecione pelo menos 1 serviço.')
-                  return
-                }
-                setPackage('Pacote Personalizado')
-                // selectedServices já está no store via toggle; apenas desce pra contato
-              } else {
-                selectFixedPackage()
-                return
-              }
-              toast.info('Pacote selecionado!', { description: 'Personalizado marcado. Revise no formulário.', duration: 2500 })
-              scrollToContact()
-            }}
-            disabled={isPersonalizado && localSelected.length === 0}
-          >
-            {isPersonalizado ? 'Montar meu pacote' : 'Solicitar proposta'}
-          </Button>
-        </div>
-      </div>
-    </motion.div>
+      </section>
+    </MotionConfig>
   )
 }
