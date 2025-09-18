@@ -2,11 +2,12 @@
 
 import { MorphingWords } from '@/components/morphing-words'
 import { Button } from '@/components/ui/button'
+import { useHeroVideo } from '@/hooks/use-hero-video'
 import { motion, MotionConfig, type Variants } from 'framer-motion'
 import { ArrowDown, CalendarCheck2, Sparkles } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { MouseEvent, useEffect, useRef, useState } from 'react'
+import { MouseEvent, useRef } from 'react'
 
 /** Animations */
 const ENTER_DUR = 0.9
@@ -30,41 +31,8 @@ const fadeUp = (delay = 0): Variants => ({
 export default function HeroV2() {
   const heroRef = useRef<HTMLVideoElement | null>(null)
   const sectionRef = useRef<HTMLElement>(null)
-  const [fallback, setFallback] = useState(false)
 
-  /** Robust video boot with graceful fallback */
-  useEffect(() => {
-    const v = heroRef.current
-    if (!v) return
-
-    v.muted = true
-    v.defaultMuted = true
-    v.playsInline = true
-    v.setAttribute('playsinline', '')
-    v.setAttribute('webkit-playsinline', '')
-
-    const tryPlay = () => v.play().catch(() => setFallback(true))
-    const onOK = () => setFallback(false)
-    const onErr = () => setFallback(true)
-
-    v.addEventListener('playing', onOK)
-    v.addEventListener('canplay', onOK)
-    v.addEventListener('loadeddata', tryPlay, { once: true })
-    v.addEventListener('stalled', onErr)
-    v.addEventListener('error', onErr)
-
-    // segurança extra: tenta reproduzir após interação
-    const onTap = () => !v.paused && v.play().catch(() => {})
-    window.addEventListener('touchstart', onTap, { once: true })
-
-    return () => {
-      v.removeEventListener('playing', onOK)
-      v.removeEventListener('canplay', onOK)
-      v.removeEventListener('stalled', onErr)
-      v.removeEventListener('error', onErr)
-      window.removeEventListener('touchstart', onTap)
-    }
-  }, [])
+  const { ref: videoRef, fallback, ready } = useHeroVideo();
 
   /** Smooth anchor scroll respeitando header fixo */
   const scrollToId = (id: string) => {
@@ -96,31 +64,32 @@ export default function HeroV2() {
           className="absolute inset-0 -z-10 will-change-transform transform-gpu pointer-events-none"
           aria-hidden
         >
+        <div className="absolute inset-0 -z-10">
           {!fallback && (
             <video
-              ref={heroRef}
+              ref={videoRef}
               className="absolute inset-0 h-full w-full object-cover object-[center_45%] sm:object-[center_35%]"
               autoPlay
               muted
               loop
               playsInline
-              preload="metadata"
+              preload="none"               // ✅ não baixa nada até injetarmos sources
               poster="/images/hero-poster.jpg"
-            >
-              <source src="/videos/hero.mp4" type="video/mp4" />
-            </video>
+              disablePictureInPicture      // opcional
+              controls={false}
+            />
           )}
-
           {fallback && (
             <Image
               src="/images/hero-poster.jpg"
               alt=""
               fill
               priority
-              className="object-cover object-[center_45%] sm:object-[center_35%] select-none"
+              className="object-cover object-[center_45%] sm:object-[center_35%]"
               sizes="100vw"
             />
           )}
+        </div>
 
           {/* Vignette + gradient para legibilidade perfeita */}
           <div className="absolute inset-0 bg-black/20 sm:bg-black/30" />
@@ -136,7 +105,7 @@ export default function HeroV2() {
 
         {/* CONTEÚDO */}
         <motion.div
-          className="relative z-10 mx-auto flex w-full max-w-[1200px] flex-1 items-end md:items-center px-4 sm:px-6 md:px-10 lg:px-16"
+          className="relative z-10 mx-auto flex w-full max-w-[1200px] flex-1 items-start mt-34 md:mt-0 md:items-center px-4 sm:px-6 md:px-10 lg:px-16"
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, amount: 0.5 }}
@@ -192,14 +161,14 @@ export default function HeroV2() {
             >
               <CalendarCheck2 className="h-5 w-5" aria-hidden />
               <p className="text-xs sm:text-sm">
-                +120 casamentos realizados &nbsp;•&nbsp; 4.9/5 de satisfação
+                +120 casamentos realizados &nbsp;•&nbsp; 5/5 de satisfação
               </p>
             </motion.div>
           </div>
         </motion.div>
 
         {/* ONDA decorativa + seta */}
-        <div className="absolute bottom-0 left-0 right-0 z-20 w-full overflow-hidden select-none">
+        <div className="absolute -bottom-2 left-0 right-0 z-20 w-full overflow-hidden select-none">
           <svg
             className="h-20 sm:h-28 w-full text-background"
             viewBox="0 0 1200 120"

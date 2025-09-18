@@ -44,7 +44,7 @@ const OFFICIAL_PACKAGES: Pkg[] = [
     tierLabel: 'GRACE',
     title: 'Assessoria Final',
     thumb: '/casamentos/casamento4.svg',
-    price: 4697,
+    price: null,
     installment: calcInstallment(4697, 12),
     features: [
       'Acompanhamento on-line e reunião de alinhamento (≈50 dias antes)',
@@ -62,7 +62,7 @@ const OFFICIAL_PACKAGES: Pkg[] = [
     tierLabel: 'POSTURE',
     title: 'Assessoria Completa',
     thumb: '/casamentos/casamento2.svg',
-    price: 6997,
+    price: null,
     installment: calcInstallment(6997, 12),
     features: [
       'Acompanhamento online e parcialmente presencial',
@@ -84,7 +84,7 @@ const OFFICIAL_PACKAGES: Pkg[] = [
     title: 'Assessoria VIP',
     subtitle: 'Completa VIP',
     thumb: '/casamentos/casamento3.svg',
-    price: 9997,
+    price: null,
     installment: calcInstallment(9997, 12),
     features: [
       'Consultoria do pré ao pós-evento',
@@ -341,9 +341,12 @@ export function PackagesSection() {
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.4 }}
           >
-            <h2 className="mb-2 text-[clamp(22px,4.6vw,40px)] font-extrabold tracking-tight text-white">
-              Nossos <span className={`bg-gradient-to-r ${ACCENT} bg-clip-text text-transparent`}>Pacotes</span>
-            </h2>
+          <h2 className="mb-10 text-2xl font-extrabold tracking-tight text-white md:text-4xl">
+            Nossos{' '}
+            <span className="bg-gradient-to-r from-[#F5BC7B] to-[#E08B5B] bg-clip-text text-transparent">
+              Pacotes
+            </span>
+          </h2>
             <p className="text-sm text-white/80">
               Escolha o nível de acompanhamento ideal — do suporte final ao atendimento VIP do início ao fim.
             </p>

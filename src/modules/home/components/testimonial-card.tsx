@@ -145,7 +145,7 @@ export default function TestimonialsCarouselSection() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <section id="depoimentos" className="relative w-full bg-[#122d2f] py-20 px-6 md:px-12">
+      <section id="depoimentos" className="relative w-full bg-[#122d2f] py-10 px-6 md:px-12">
         {/* gradientes laterais (fade) para elegância e leitura do corte */}
         <div className="pointer-events-none absolute inset-y-0 left-0 w-10 bg-gradient-to-r from-[#122d2f] to-transparent/0" />
         <div className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-[#122d2f] to-transparent/0" />
@@ -158,12 +158,12 @@ export default function TestimonialsCarouselSection() {
             transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
             className="mb-10 md:mb-14 flex flex-col gap-3 md:flex-row md:items-end md:justify-between"
           >
-            <h2 className="text-[clamp(26px,5vw,44px)] font-extrabold tracking-tight text-white">
-              Nossos{" "}
-              <span className="bg-gradient-to-r from-[#F5BC7B] to-[#E08B5B] bg-clip-text text-transparent">
-                Depoimentos
-              </span>
-            </h2>
+          <h2 className="mb-10 text-2xl font-extrabold tracking-tight text-white md:text-4xl">
+            Nossos{' '}
+            <span className="bg-gradient-to-r from-[#F5BC7B] to-[#E08B5B] bg-clip-text text-transparent">
+              Depoimentos
+            </span>
+          </h2>
 
             {/* média de avaliações */}
             <div className="flex items-center gap-3 text-white/90">

@@ -52,7 +52,7 @@ const cardVariants: Variants = {
 
 export function ServicesSectionV2() {
   return (
-    <section id="trabalhos" className="w-full bg-[#122d2f] px-6 pt-28 pb-20 md:px-20 lg:px-24">
+    <section id="trabalhos" className="w-full bg-[#122d2f] px-6 pt-10 pb-20 md:px-20 lg:px-24">
       <div className="mx-auto max-w-6xl">
         <h2 className="mb-10 text-2xl font-extrabold tracking-tight text-white md:text-4xl">
           Nossos{' '}

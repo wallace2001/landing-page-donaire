@@ -98,7 +98,7 @@ export default function ContactSection() {
   }
 
   return (
-    <section id="contato" className="w-full bg-[#122d2f] px-6 pt-6 pb-24 sm:px-12 md:px-24">
+    <section id="contato" className="w-full bg-[#122d2f] px-6 pb-24 sm:px-12 md:px-24">
       <div className="mx-auto max-w-3xl">
         <motion.h2
           initial={{ opacity: 0, y: 8 }}
