@@ -4,7 +4,7 @@ import { MorphingWords } from '@/components/morphing-words'
 import { Button } from '@/components/ui/button'
 import { useHeroVideo } from '@/hooks/use-hero-video'
 import { motion, MotionConfig, type Variants } from 'framer-motion'
-import { ArrowDown, CalendarCheck2, Sparkles } from 'lucide-react'
+import { CalendarCheck2, Sparkles } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { MouseEvent, useRef } from 'react'
@@ -105,7 +105,7 @@ export default function HeroV2() {
 
         {/* CONTEÚDO */}
         <motion.div
-          className="relative z-10 mx-auto flex w-full max-w-[1200px] flex-1 items-start mt-34 md:mt-0 md:items-center px-4 sm:px-6 md:px-10 lg:px-16"
+          className="relative z-10 mx-auto flex w-full max-w-[1200px] flex-1 items-end mb-36 md:mb-0 md:items-center px-4 sm:px-6 md:px-10 lg:px-16"
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, amount: 0.5 }}
@@ -125,12 +125,12 @@ export default function HeroV2() {
             <h1 className="sr-only">Donaire Cerimonial — casamentos com sofisticação, propósito e amor</h1>
 
             <motion.div variants={fadeUp(0.02)}>
-              <p className="text-[clamp(22px,4.4vw,48px)] leading-[1.06] font-light drop-shadow-[0_2px_12px_rgba(0,0,0,0.55)]">
+              <div className="text-[clamp(22px,4.4vw,48px)] leading-[1.06] flex flex-col items-start font-light drop-shadow-[0_2px_12px_rgba(0,0,0,0.55)]">
                 Transformamos o seu sonho em um momento inesquecível com{' '}
                 <span className="inline-block align-top font-extralight">
                   <MorphingWords />
                 </span>
-              </p>
+              </div>
             </motion.div>
 
             <motion.p
@@ -166,30 +166,6 @@ export default function HeroV2() {
             </motion.div>
           </div>
         </motion.div>
-
-        {/* ONDA decorativa + seta */}
-        <div className="absolute -bottom-2 left-0 right-0 z-20 w-full overflow-hidden select-none">
-          <svg
-            className="h-20 sm:h-28 w-full text-background"
-            viewBox="0 0 1200 120"
-            preserveAspectRatio="none"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden
-          >
-            <path d="M0,0 C300,100 900,0 1200,100 L1200,120 L0,120 Z" fill="#fff" />
-          </svg>
-
-          <motion.div
-            className="flex -mt-6 sm:-mt-8 justify-center pb-[env(safe-area-inset-bottom)]"
-            initial={{ opacity: 0, y: 8 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ type: 'tween', duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <ArrowDown className="h-7 w-7 sm:h-8 sm:w-8 animate-bounce" style={{ color: '#153b3d' }} aria-hidden />
-            <span className="sr-only">Role para ver mais</span>
-          </motion.div>
-        </div>
       </section>
     </MotionConfig>
   )
